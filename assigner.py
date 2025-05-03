@@ -1,3 +1,5 @@
+# assigner.py
+
 def assign_tasks(date_str, users, tasks):
     import copy
     users_copy = copy.deepcopy(users)
@@ -9,14 +11,22 @@ def assign_tasks(date_str, users, tasks):
             key=lambda x: x["points"]
         )
         if not available:
-            result.append({"task": task["name"], "assigned_to": "未割り当て"})
+            result.append({
+                "task": task["name"],
+                "assigned_to": "未割り当て",
+                "done": False,
+                "thanks": 0,
+                "points": task["points"]
+            })
             continue
+
         assigned = available[0]
-        assigned["points"] += task["points"]
         result.append({
             "task": task["name"],
             "assigned_to": assigned["name"],
             "done": False,
-            "thanks": 0
+            "thanks": 0,
+            "points": task["points"]
         })
+
     return result, users_copy

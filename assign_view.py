@@ -2,11 +2,12 @@ import streamlit as st
 import json
 import os
 from assigner import assign_tasks
+from discord_notify import send_notification
 
 DATA_DIR = "data/"
-ASSIGN_FILE = DATA_DIR + "assignments.json"
-USERS_FILE = DATA_DIR + "users.json"
-TASKS_FILE = DATA_DIR + "tasks.json"
+ASSIGN_FILE = os.path.join(DATA_DIR, "assignments.json")
+USERS_FILE = os.path.join(DATA_DIR, "users.json")
+TASKS_FILE = os.path.join(DATA_DIR, "tasks.json")
 
 def load_json(file):
     if not os.path.exists(file):
@@ -26,7 +27,7 @@ def run():
     tasks_all = load_json(TASKS_FILE)
     assignments = load_json(ASSIGN_FILE)
 
-    daily_tasks = tasks_all  # 日替わりにするなら変更可
+    daily_tasks = tasks_all
 
     if st.button("割り当て開始"):
         result, updated_users = assign_tasks(date_str, users, daily_tasks)
@@ -35,14 +36,37 @@ def run():
         save_json(USERS_FILE, updated_users)
         st.success("割り当て完了！")
 
+        # 通知送信
+        message = f"📅 {date_str} の家事割り当てが完了しました！\n\n"
+        for entry in result:
+            message += f"🧹 {entry['task']} → 👤 {entry['assigned_to']}\n"
+        send_notification(message)
+
     st.subheader("📋 今日の担当")
     today = assignments.get(date_str, [])
+    updated = False
+
     for entry in today:
         col1, col2, col3 = st.columns(3)
         col1.write(f"🧹 {entry['task']}")
         col2.write(f"👤 {entry['assigned_to']}")
-        if col3.button("完了", key=f"{entry['task']}-done"):
-            entry["done"] = True
+
+        if not entry.get("done"):
+            if col3.button("完了", key=f"{entry['task']}-done"):
+                entry["done"] = True
+                # ポイント加算
+                for user in users:
+                    if user["name"] == entry["assigned_to"]:
+                        user["points"] += entry["points"]
+                        break
+                updated = True
+        else:
+            col3.write("✅ 完了済み")
+
         if col3.button("👏", key=f"{entry['task']}-thanks"):
             entry["thanks"] = entry.get("thanks", 0) + 1
-    save_json(ASSIGN_FILE, assignments)
+            updated = True
+
+    if updated:
+        save_json(ASSIGN_FILE, assignments)
+        save_json(USERS_FILE, users)

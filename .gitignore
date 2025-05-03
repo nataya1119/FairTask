@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Streamlit cache & logs
+.streamlit/config.toml
+.streamlit/*.json
+.streamlit/*.log
+
+# VSCode settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data files (optional: keep if tracking is needed)
+data/*.json
+!data/.gitkeep
+
+# Jupyter (just in case)
+.ipynb_checkpoints/
+
+# PyInstaller
+*.spec

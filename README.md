@@ -1,23 +1,37 @@
-# 🧼 FairTask
+# 🐾 FairTask（フェアタスク）
 
-公平で柔軟な掃除当番管理アプリ。  
-タスクの労力をポイント化して、真の公平性を実現！
+**FairTask** は、寮生活における共有タスク（掃除、ゴミ出し、片付けなど）を公平に割り当て、完了管理、感謝共有、そして完了率に応じた自動注意喚起まで行う、Streamlit製のネコ型タスク管理アプリです🐱
 
 ---
 
-## 🔧 セットアップ手順（開発者向け）
+## 🚀 機能一覧
+
+- ✅ タスクの自動割り当て（点数制）
+- 📅 過去の完了履歴の可視化
+- 💌 Thanksボタンで感謝を記録＆Discord通知
+- 🏅 Thanksランキング表示（月別）
+- ⚠️ 完了率が50%未満のメンバーをDiscordで注意喚起
+- 📦 月初に過去データを自動ZIPアーカイブ（爆発防止）
+- 🌐 サーバー上にホストしてみんなで使える！
+
+---
+
+## 🛠 使用技術
+
+- Python 3.12+
+- [Streamlit](https://streamlit.io/)
+- JSONファイルベースのデータ管理
+- Discord Webhook通知
+- GitHub Actions（CI）
+
+---
+
+## 💻 ローカルでの起動方法
 
 ```bash
-# リポジトリをクローンして移動
-git clone https://github.com/arataka1313/FairTask.git
-cd FairTask
-
-# 仮想環境を作成して起動（WSL or Windows）
+git clone https://github.com/yourname/fairtask.git
+cd fairtask
 python3 -m venv venv
-source venv/bin/activate  # Windowsなら venv\Scripts\activate
-
-# ライブラリをインストール
+source venv/bin/activate
 pip install -r requirements.txt
-
-# アプリを起動
 streamlit run app.py

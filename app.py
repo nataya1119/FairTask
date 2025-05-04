@@ -1,16 +1,29 @@
+# fairtask_v2/app.py
 import streamlit as st
-import task_input
-import user_input
 import assign_view
+import user_input
+import task_input
+import history_view
+import thanks_ranking
 
-st.set_page_config(page_title="FairTask", layout="centered")
-st.title("FairTask")
+st.set_page_config(page_title="FairTaskにゃ", layout="centered")
 
-page = st.sidebar.selectbox("ページを選んでね", ["家事タスク登録", "メンバー登録", "割り当て＆完了"])
+st.sidebar.title("🐾 メニュー")
+page = st.sidebar.radio("にゃにする？", (
+    "割り当て管理",
+    "ユーザー登録",
+    "タスク登録",
+    "完了率ランキング",
+    "Thanksランキング"
+))
 
-if page == "家事タスク登録":
-    task_input.run()
-elif page == "メンバー登録":
-    user_input.run()
-elif page == "割り当て＆完了":
+if page == "割り当て管理":
     assign_view.run()
+elif page == "ユーザー登録":
+    user_input.run()
+elif page == "タスク登録":
+    task_input.run()
+elif page == "完了率ランキング":
+    history_view.run()
+elif page == "Thanksランキング":
+    thanks_ranking.run()
